@@ -14,6 +14,7 @@ import com.skcraft.launcher.launch.LaunchListener;
 import com.skcraft.launcher.launch.LaunchOptions;
 import com.skcraft.launcher.launch.LaunchOptions.UpdatePolicy;
 import com.skcraft.launcher.swing.*;
+import com.skcraft.launcher.util.Java;
 import com.skcraft.launcher.util.SharedLocale;
 import com.skcraft.launcher.util.SwingExecutor;
 import lombok.Getter;
@@ -349,6 +350,12 @@ public class LauncherFrame extends JFrame {
     }
 
     private void launch() {
+    	if(!Java.checkBitAndRam()) {
+        	Java.showErrorMenu();
+        	return;
+        }
+    	
+    	
         boolean permitUpdate = updateCheck.isSelected();
         Instance instance = launcher.getInstances().get(instancesTable.getSelectedRow());
 

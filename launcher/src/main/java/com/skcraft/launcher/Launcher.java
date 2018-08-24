@@ -21,6 +21,7 @@ import com.skcraft.launcher.persistence.Persistence;
 import com.skcraft.launcher.swing.SwingHelper;
 import com.skcraft.launcher.update.UpdateManager;
 import com.skcraft.launcher.util.HttpRequest;
+import com.skcraft.launcher.util.Java;
 import com.skcraft.launcher.util.SharedLocale;
 import com.skcraft.launcher.util.SimpleLogFormatter;
 import com.sun.management.OperatingSystemMXBean;
@@ -53,7 +54,6 @@ import static com.skcraft.launcher.util.SharedLocale.tr;
 public final class Launcher {
 
     public static final int PROTOCOL_VERSION = 2;
-
     @Getter
     private final ListeningExecutorService executor = MoreExecutors.listeningDecorator(Executors.newCachedThreadPool());
     @Getter @Setter private Supplier<Window> mainWindowSupplier = new DefaultLauncherSupplier(this);
@@ -66,6 +66,7 @@ public final class Launcher {
     @Getter private final LaunchSupervisor launchSupervisor = new LaunchSupervisor(this);
     @Getter private final UpdateManager updateManager = new UpdateManager(this);
     @Getter private final InstanceTasks instanceTasks = new InstanceTasks(this);
+    private final Java java1 = new Java(this);
 
     /**
      * Create a new launcher instance with the given base directory.
@@ -109,6 +110,11 @@ public final class Launcher {
         });
 
         updateManager.checkForUpdate();
+        
+      //Check Java Version
+        if(!Java.checkBitVersion()) {
+        	Java.showErrorMenu();
+        }
     }
 
     /**
@@ -395,7 +401,8 @@ public final class Launcher {
             dir = new File(".");
             log.info("Using current directory " + dir.getAbsolutePath());
         }
-
+        
+        
         return new Launcher(dir);
     }
 
