@@ -18,5 +18,5 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew -Pversion=$RELEASE_VERSION clean build
     - name: Create Jar Pack
-      run: ls -lah && pack200 --no-gzip launcher.jar.pack launcher/builds/libs/launcher-$RELEASE_VERSION-all.jar
+      run: pack200 --no-gzip launcher.jar.pack launcher/build/libs/launcher-$RELEASE_VERSION-all.jar
     
